@@ -37,12 +37,18 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-//Subir
-$route['subir'] = "subir";
+//Top (es la misma pagina de inicio)
+$route['top'] = "welcome";
+//Autenticacion
+$route['cerrar-sesion'] = "auth/logout";
+$route['entrar'] = "auth/login";
+$route['registrar'] = "auth/register";
+$route['recuperar-password'] = "auth/forgot_password";
 //Default
 $route['default_controller'] = "welcome";
-$route['404_override'] = '';
-
-
+$route['404_override'] = 'errors/page_missing';
+//Antiguos
+$route['auth'] = $route['404_override'];
+$route['auth/(:any)'] = $route['404_override'];
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

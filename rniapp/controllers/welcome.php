@@ -1,25 +1,41 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
-
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
+class Welcome extends CI_Controller
+{
+	function __construct()
 	{
-		$this->load->view('index/bienvenido.php');
+		parent::__construct();
+
+		$this->load->helper('url');
+		$this->load->library('tank_auth');
+	}
+
+	function index()
+	{
+		$data['title'] = "Inicio";
+		$data['top_active'] = "active";
+		$this->load->view('templates/header_top', $data);
+		$this->load->view('templates/jquery');
+		$this->load->view('templates/bootstrap');
+		$this->load->view('templates/font-awesome');
+		$this->load->view('templates/header_bot');
+		
+		if ($this->tank_auth->is_logged_in()) {
+			// Entra usuario registrado
+			//redirect('/auth/login/');
+			$this->load->view('templates/nav/nav_template', $data);
+			$this->load->view('templates/nav/nav_registrado');
+		} else {
+			// Entra visitante
+			/*$data['user_id']	= $this->tank_auth->get_user_id();
+			$data['username']	= $this->tank_auth->get_username();
+			$this->load->view('welcome', $data);*/
+			$this->load->view('templates/nav/nav_template');
+			$this->load->view('templates/nav/nav_visitante');
+		}
+
+		$this->load->view('index/bienvenido');
+		$this->load->view('templates/footer');
 	}
 }
 
